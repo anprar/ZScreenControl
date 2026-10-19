@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="400" viewBox="0 0 1400 400">
+  <rect width="1400" height="400" rx="24" fill="#161B33"/>
+  <circle cx="240" cy="200" r="150" fill="#232E63" fill-opacity="0.6"/>
+
+  <!-- bulan + Zz di dalam lingkaran -->
+  <g transform="translate(118,98) scale(8.5)">
+    <path fill="#FFFFFF" d="M12,3c-4.97,0 -9,4.03 -9,9s4.03,9 9,9s9,-4.03 9,-9c0,-0.46 -0.04,-0.92 -0.1,-1.36c-0.98,1.37 -2.58,2.26 -4.4,2.26c-2.98,0 -5.4,-2.42 -5.4,-5.4c0,-1.81 0.89,-3.42 2.26,-4.4C12.92,3.04 12.46,3 12,3z"/>
+  </g>
+  <g transform="translate(218,84) scale(5)">
+    <path fill="#ECFFFFFF" d="M0,0H11V3.4L5.1,9.6H11V13H0V9.6L5.9,3.4H0Z"/>
+  </g>
+  <g transform="translate(238,150) scale(3.4)">
+    <path fill="#DDFFFFFF" d="M0,0H11V3.4L5.1,9.6H11V13H0V9.6L5.9,3.4H0Z"/>
+  </g>
+
+  <text x="420" y="185" fill="#FFFFFF" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="76" font-weight="700">ZScreenControl</text>
+  <text x="422" y="248" fill="#9AA6D6" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="36">Layar tidur tepat waktu — tanpa iklan, tanpa pelacak.</text>
+  <text x="422" y="310" fill="#6672A8" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="28">Timeout Layar · Sleep Timer · Jadwal · Timeout per Aplikasi</text>
+</svg>

@@ -1,7 +1,13 @@
 # ZScreenControl
 
+<p align="center">
+  <img src="art/logo.svg" width="112" alt="Logo ZScreenControl">
+</p>
+
 Aplikasi Android gratis tanpa iklan untuk mengontrol layar:
 **timeout layar**, **sleep timer**, **jadwal otomatis**, dan **timeout per aplikasi**.
+
+![ZScreenControl banner](art/banner.svg)
 
 - Stack: Kotlin + Jetpack Compose (Material 3), Room, DataStore, AlarmManager
 - minSdk 28 (Android 9) — termasuk **OPPO A5 2020 / ColorOS**
