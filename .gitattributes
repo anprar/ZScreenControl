@@ -1,0 +1,6 @@
+# Normalisasi line ending; gradlew (shell) wajib LF, .bat wajib CRLF.
+* text=auto eol=lf
+*.bat text eol=crlf
+*.jar binary
+*.apk binary
+*.keystore binary

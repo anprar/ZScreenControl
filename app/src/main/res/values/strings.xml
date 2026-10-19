@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">ZScreenControl</string>
+
+    <!-- Tab -->
+    <string name="tab_timeout">Timeout Layar</string>
+    <string name="tab_sleep_timer">Sleep Timer</string>
+    <string name="tab_scheduler">Jadwal</string>
+
+    <!-- Timeout layar -->
+    <string name="timeout_current">Timeout sistem saat ini</string>
+    <string name="timeout_seconds">%1$d detik</string>
+    <string name="timeout_minutes">%1$d menit</string>
+    <string name="timeout_apply_failed">Gagal mengubah timeout. Beri izin "Ubah pengaturan sistem" dulu.</string>
+    <string name="timeout_presets">Pilih cepat</string>
+    <string name="timeout_turn_off_now">Matikan layar sekarang</string>
+    <string name="timeout_method_none">Belum ada metode aktif. Aktifkan salah satu izin di bawah.</string>
+    <string name="timeout_method_device_admin">Metode aktif: Device Admin (kunci layar)</string>
+    <string name="timeout_method_accessibility">Metode aktif: Layanan Aksesibilitas (kunci layar)</string>
+    <string name="timeout_method_overlay">Metode aktif: Overlay hitam (screen-off palsu)</string>
+
+    <!-- Izin & status -->
+    <string name="perm_section_title">Izin &amp; status</string>
+    <string name="perm_write_settings">Ubah pengaturan sistem</string>
+    <string name="perm_write_settings_desc">Diperlukan untuk mengubah timeout layar.</string>
+    <string name="perm_overlay">Tampil di atas aplikasi lain</string>
+    <string name="perm_overlay_desc">Untuk overlay hitam (screen-off palsu).</string>
+    <string name="perm_accessibility">Layanan Aksesibilitas</string>
+    <string name="perm_accessibility_desc">Untuk kunci layar tanpa Device Admin.</string>
+    <string name="perm_device_admin">Device Admin</string>
+    <string name="perm_device_admin_desc">Untuk mengunci layar langsung (lockNow).</string>
+    <string name="perm_battery">Optimasi baterai</string>
+    <string name="perm_battery_desc">Matikan optimasi agar service tidak dibunuh. Khususnya ColorOS/OPPO.</string>
+    <string name="perm_autostart">Auto-start (ColorOS)</string>
+    <string name="perm_autostart_desc">Buka pengaturan auto-start OPPO/Realme.</string>
+    <string name="perm_status_active">Aktif</string>
+    <string name="perm_status_inactive">Belum</string>
+    <string name="action_grant">Izinkan</string>
+    <string name="action_open">Buka</string>
+
+    <!-- Sleep timer -->
+    <string name="sleep_presets">Durasi</string>
+    <string name="sleep_start">Mulai timer</string>
+    <string name="sleep_stop">Berhenti</string>
+    <string name="sleep_extend">+10 menit</string>
+    <string name="sleep_remaining">Sisa waktu</string>
+    <string name="sleep_idle_hint">Pilih durasi lalu mulai. Saat habis, layar akan dimatikan otomatis.</string>
+    <string name="sleep_minutes_value">%1$d menit</string>
+
+    <!-- Jadwal -->
+    <string name="scheduler_title">Jadwal otomatis</string>
+    <string name="scheduler_placeholder">Segera hadir: atur jadwal (mis. 22.00 setiap hari) untuk mematikan layar otomatis.</string>
+
+    <!-- Notifikasi -->
+    <string name="channel_timer_name">Sleep Timer</string>
+    <string name="channel_timer_desc">Notifikasi timer tidur yang sedang berjalan.</string>
+    <string name="channel_overlay_name">Overlay Layar</string>
+    <string name="channel_overlay_desc">Notifikasi saat overlay hitam aktif.</string>
+    <string name="notif_timer_title">Sleep Timer berjalan</string>
+    <string name="notif_timer_text">Layar akan dimatikan otomatis.</string>
+    <string name="notif_timer_stop">Berhenti</string>
+    <string name="notif_overlay_title">Layar tidur (overlay hitam)</string>
+    <string name="notif_overlay_text">Ketuk layar untuk keluar.</string>
+    <string name="notif_overlay_stop">Keluar</string>
+
+    <!-- Quick Settings Tile -->
+    <string name="tile_screen_off_label">Matikan Layar</string>
+
+    <!-- Deskripsi layanan aksesibilitas (tampil ke pengguna) -->
+    <string name="accessibility_service_description">Dipakai untuk mengunci layar (GLOBAL_ACTION_LOCK_SCREEN) dan, di versi berikutnya, mendeteksi aplikasi yang sedang dibuka untuk fitur timeout per aplikasi.</string>
+</resources>
