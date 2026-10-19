@@ -22,3 +22,15 @@ Install di atas APK lama langsung bisa (sama applicationId `com.zscreencontrol`)
 5. Tab **Aplikasi**: aktifkan **Layanan Aksesibilitas**.
 
 > APK ini ditandatangani kunci **debug** — cocok untuk pemakaian pribadi.
+
+---
+
+## Dua varian APK di release ini
+
+| File | Tanda tangan | Untuk |
+|---|---|---|
+| **ZScreenControl-v0.2.0-release.apk** | Kunci rilis (permanen) | ✔️ Dipakai ini. Install/update selanjutnya langsung bekerja |
+| ZScreenControl-v0.2.0-debug.apk | Kunci debug CI (be-eviden) | Backup saja |
+
+> 1. Pemainan pertama kali tetap bisa dihadang Play Protect ("Selengkapnya" → *Instal tetap saja*, atau matikan sementara pemindaian di Play Store → Play Protect).
+> 2. Pekerja terkena aplikasi **debug** yang terlanjur terpasang → **uninstall dulu** sebelum memasang versi *release* (beda tanda tangan).
