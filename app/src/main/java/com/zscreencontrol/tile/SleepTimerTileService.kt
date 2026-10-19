@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.SystemClock
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
+import androidx.core.content.ContextCompat
 import com.zscreencontrol.MainActivity
 import com.zscreencontrol.R
 import com.zscreencontrol.core.Prefs
