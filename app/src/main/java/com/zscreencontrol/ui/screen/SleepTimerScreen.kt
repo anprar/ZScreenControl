@@ -52,7 +52,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun SleepTimerScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
-    var selectedMinutes by rememberSaveable { mutableStateOf(30) }
+    var selectedMinutes by rememberSaveable { mutableStateOf(Prefs.lastTimerMinutes(context)) }
     var now by remember { mutableLongStateOf(SystemClock.elapsedRealtime()) }
 
     // Ticker 1 detik: UI membaca status dari Prefs, jadi selalu sinkron dengan service.

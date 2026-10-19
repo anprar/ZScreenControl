@@ -14,6 +14,7 @@ object Prefs {
     private const val KEY_TIMER_RUNNING = "timer_running"
     private const val KEY_TIMER_END = "timer_end_elapsed"
     private const val KEY_TIMER_DURATION = "timer_duration_ms"
+    private const val KEY_LAST_MINUTES = "last_timer_minutes"
 
     private fun prefs(context: Context): SharedPreferences =
         context.getSharedPreferences(NAME, Context.MODE_PRIVATE)
@@ -40,4 +41,16 @@ object Prefs {
             .putBoolean(KEY_TIMER_RUNNING, false)
             .apply()
     }
+
+    /** Durasi terakhir yang user pakai — default tile & widget sleep timer. */
+    fun lastTimerMinutes(context: Context): Int =
+        prefs(context).getInt(KEY_LAST_MINUTES, DEFAULT_LAST_MINUTES)
+
+    fun setLastTimerMinutes(context: Context, minutes: Int) {
+        prefs(context).edit()
+            .putInt(KEY_LAST_MINUTES, minutes.coerceIn(1, 24 * 60))
+            .apply()
+    }
+
+    private const val DEFAULT_LAST_MINUTES = 30
 }

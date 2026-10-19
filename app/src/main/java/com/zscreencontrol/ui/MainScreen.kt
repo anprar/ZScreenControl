@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.Bedtime
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Timer
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.zscreencontrol.R
+import com.zscreencontrol.ui.screen.AppTimeoutListScreen
 import com.zscreencontrol.ui.screen.SchedulerScreen
 import com.zscreencontrol.ui.screen.SleepTimerScreen
 import com.zscreencontrol.ui.screen.TimeoutScreen
@@ -30,7 +32,8 @@ import com.zscreencontrol.ui.screen.TimeoutScreen
 private enum class MainTab(val labelRes: Int, val icon: ImageVector) {
     TIMEOUT(R.string.tab_timeout, Icons.Filled.Timer),
     SLEEP_TIMER(R.string.tab_sleep_timer, Icons.Filled.Bedtime),
-    SCHEDULER(R.string.tab_scheduler, Icons.Filled.Schedule)
+    SCHEDULER(R.string.tab_scheduler, Icons.Filled.Schedule),
+    APPS(R.string.tab_apps, Icons.Filled.Apps)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,6 +67,7 @@ fun MainScreen() {
                 MainTab.TIMEOUT -> TimeoutScreen()
                 MainTab.SLEEP_TIMER -> SleepTimerScreen()
                 MainTab.SCHEDULER -> SchedulerScreen()
+                MainTab.APPS -> AppTimeoutListScreen()
             }
         }
     }

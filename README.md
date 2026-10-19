@@ -1,28 +1,32 @@
 # ZScreenControl
 
 Aplikasi Android gratis tanpa iklan untuk mengontrol layar:
-**timeout layar**, **sleep timer**, dan (menyusul) **jadwal otomatis**.
+**timeout layar**, **sleep timer**, **jadwal otomatis**, dan **timeout per aplikasi**.
 
-- Stack: Kotlin + Jetpack Compose (Material 3)
+- Stack: Kotlin + Jetpack Compose (Material 3), Room, DataStore, AlarmManager
 - minSdk 28 (Android 9) — termasuk **OPPO A5 2020 / ColorOS**
 - targetSdk 36
-- Versi saat ini: **0.1.0**
+- Versi saat ini: **0.2.0**
 
-## Fitur v0.1.0
+## Fitur v0.2.0
 
 | Tab | Isi |
 |---|---|
-| Timeout Layar | Lihat & ubah timeout layar sistem, tombol "Matikan layar sekarang", status izin lengkap + panduan ColorOS |
-| Sleep Timer | Preset durasi, hitung mundur, +10 menit, berhenti; otomatis mematikan layar saat habis |
-| Jadwal | Placeholder — direncanakan di v0.2 |
+| Timeout Layar | Lihat & ubah timeout layar sistem, tombol "Matikan layar sekarang", pilihan metode (Otomatis/Admin/Aksesibilitas/Overlay), status izin lengkap + panduan ColorOS |
+| Sleep Timer | Preset durasi, hitung mundur, +10 menit, berhenti; otomatis mematikan layar saat habis (bertahan walau proses dibekukan, ada alarm cadangan) |
+| Jadwal | Daftar jadwal berulang (hari + jam) via Room + AlarmManager; bertahan setelah reboot; pengingat izin "Alarm & pengingat" |
+| Aplikasi | **Timeout per aplikasi**: daftarkan app tertentu + durasi pemakaian; setelah batas habis layar dimatikan otomatis (via layanan aksesibilitas) |
 
-Metode mematikan layar (fallback bertingkat, otomatis memilih yang tersedia):
+Metode mematikan layar (fallback bertingkat saat pilihan "Otomatis"):
 
 1. **Device Admin** → `lockNow()`
 2. **Layanan Aksesibilitas** → `GLOBAL_ACTION_LOCK_SCREEN` (API 28+)
 3. **Overlay hitam** → "screen-off palsu" (layar fisik tetap menyala, ketuk untuk keluar)
 
-Ada juga **Quick Settings Tile "Matikan Layar"**.
+Ada juga:
+
+- **Quick Settings Tile "Matikan Layar"** dan **tile "Sleep Timer"** (mulai/berhenti + sisa waktu)
+- **Widget**: "Matikan Layar" (1 ketuk) dan "Sleep Timer" (sisa waktu + Mulai/Stop)
 
 ## Build APK lewat GitHub Actions (disarankan)
 
@@ -33,10 +37,6 @@ Workflow `Build APK` akan otomatis berjalan setiap push.
 
    ```bash
    cd D:\dokumentasi\Project\ZScreenControl\android
-   git init
-   git add .
-   git commit -m "ZScreenControl v0.1.0"
-   git branch -M main
    git remote add origin https://github.com/<USERNAME>/<NAMA-REPO>.git
    git push -u origin main
    ```
@@ -56,7 +56,9 @@ Workflow `Build APK` akan otomatis berjalan setiap push.
 4. Khusus ColorOS, lakukan dua hal agar service tidak dibunuh:
    - **Optimasi baterai**: tab Timeout Layar → "Optimasi baterai" → pilih ZScreenControl → *Don't optimize*.
    - **Auto-start**: tombol "Auto-start (ColorOS)" → aktifkan ZScreenControl.
-5. Tambahkan tile: geser Quick Settings → Edit → tambahkan **"Matikan Layar"**.
+5. Tambahkan tile & widget: geser Quick Settings → Edit → tambahkan **"Matikan Layar"** dan **"Sleep Timer"**; widget ditambahkan dari launcher (tekan lama layar beranda).
+6. Untuk tab **Jadwal**: izinkan **"Alarm & pengingat"** (khusus API 31+) lewat kartu pengingat yang tampil di tab tersebut.
+7. Untuk tab **Aplikasi**: aktifkan **Layanan Aksesibilitas** ZScreenControl (juga dipakai fitur kunci layar).
 
 ## Build lokal (opsional)
 
@@ -92,18 +94,20 @@ Tanpa secrets tersebut, workflow tetap jalan normal dan hanya membuat APK debug.
 
 ## Roadmap
 
-- **v0.2** — Jadwal otomatis (Room + AlarmManager), timeout per aplikasi (aksesibilitas),
-  pilihan metode matikan layar, widget Glance, tile sleep timer.
-- **v0.3** — Per-app timeout polish, PIN lock (opsional), pengaturan tema.
+- **v0.3** — PIN lock (opsional), tema ringan, migrasi state timer ke DataStore (saat ini tetap SharedPreferences untuk akses sinkron servis), pengaturan lanjutan per app (jam malam, kuota harian).
 
 ## Struktur singkat
 
 ```
 app/src/main/java/com/zscreencontrol/
-├─ MainActivity.kt            # entry, 3 tab Compose
-├─ core/                      # ScreenOffController, Permissions, Prefs, BatteryCompat
-├─ service/                   # SleepTimerService, Accessibility, BlackOverlay
+├─ MainActivity.kt            # entry, 4 tab Compose
+├─ ZScreenApp.kt              # channel notifikasi + init AppGraph
+├─ core/                      # ScreenOffController, Permissions, Prefs, BatteryCompat, AppGraph
+├─ data/                      # SettingsRepository (DataStore) + db/ Room (Schedule, AppTimeout)
+├─ scheduler/                 # SleepScheduler (AlarmManager), fire/reboot receiver
+├─ service/                   # SleepTimerService, AccessibilityService, BlackOverlayService
 ├─ deviceadmin/               # DeviceAdminReceiver (force-lock)
-├─ tile/                      # QS Tile
-└─ ui/                        # theme + 3 layar
+├─ tile/                      # QS Tile "Matikan Layar" + "Sleep Timer"
+├─ widget/                    # Widget provider + updater (RemoteViews)
+└─ ui/                        # theme + 4 layar
 ```

@@ -19,7 +19,9 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -27,9 +29,11 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,10 +44,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.zscreencontrol.R
+import com.zscreencontrol.core.AppGraph
 import com.zscreencontrol.core.BatteryCompat
 import com.zscreencontrol.core.OffMethod
 import com.zscreencontrol.core.Permissions
 import com.zscreencontrol.core.ScreenOffController
+import com.zscreencontrol.data.SettingKeys
+import kotlinx.coroutines.launch
 
 /**
  * Tab 1 — Timeout Layar:
@@ -51,11 +58,14 @@ import com.zscreencontrol.core.ScreenOffController
  * - tombol "matikan layar sekarang" (fallback bertingkat)
  * - daftar status izin + panduan khusus ColorOS/OPPO
  */
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun TimeoutScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     var refreshKey by remember { mutableIntStateOf(0) }
+    val scope = rememberCoroutineScope()
+    val settings = remember { AppGraph.settings }
+    val offMethodKey by settings.offMethod.collectAsState(initial = SettingKeys.METHOD_AUTO)
 
     // Segarkan status setiap kali layar kembali aktif (mis. setelah balik dari
     // halaman Settings pemberian izin).
@@ -129,6 +139,29 @@ fun TimeoutScreen(modifier: Modifier = Modifier) {
             }
             Text(
                 text = methodLabel(method),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+
+        HorizontalDivider()
+
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(
+                stringResource(R.string.method_section_title),
+                style = MaterialTheme.typography.titleSmall
+            )
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                METHOD_OPTIONS.forEach { (key, labelRes) ->
+                    FilterChip(
+                        selected = offMethodKey == key,
+                        onClick = { scope.launch { settings.setOffMethod(key) } },
+                        label = { Text(stringResource(labelRes)) }
+                    )
+                }
+            }
+            Text(
+                stringResource(R.string.method_desc),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -251,6 +284,14 @@ private fun formatTimeout(ms: Int): String =
 
 private val TIMEOUT_PRESETS_MS = listOf(
     15_000, 30_000, 60_000, 120_000, 300_000, 600_000, 1_800_000
+)
+
+/** Pilihan metode mematikan layar (disimpan di DataStore). */
+private val METHOD_OPTIONS = listOf(
+    SettingKeys.METHOD_AUTO to R.string.method_auto,
+    SettingKeys.METHOD_DEVICE_ADMIN to R.string.method_device_admin,
+    SettingKeys.METHOD_ACCESSIBILITY to R.string.method_accessibility,
+    SettingKeys.METHOD_OVERLAY to R.string.method_overlay
 )
 
 private fun readSystemTimeoutMs(context: Context): Int = try {

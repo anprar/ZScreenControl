@@ -17,6 +17,7 @@ import com.zscreencontrol.R
 import com.zscreencontrol.ZScreenApp
 import com.zscreencontrol.core.Prefs
 import com.zscreencontrol.core.ScreenOffController
+import com.zscreencontrol.widget.WidgetUpdater
 import java.util.Locale
 
 /**
@@ -30,6 +31,7 @@ import java.util.Locale
 class SleepTimerService : Service() {
 
     private val handler = Handler(Looper.getMainLooper())
+    private var tickCount = 0
 
     private val ticker = object : Runnable {
         override fun run() {
@@ -37,6 +39,11 @@ class SleepTimerService : Service() {
             if (remainingMs() <= 0L) {
                 finishTimer()
             } else {
+                tickCount++
+                if (tickCount % 15 == 0) {
+                    // Segarkan widget tiap ±15 detik utk teks sisa waktu.
+                    WidgetUpdater.updateSleepTimer(this@SleepTimerService)
+                }
                 handler.postDelayed(this, TICK_MS)
             }
         }
@@ -64,12 +71,14 @@ class SleepTimerService : Service() {
 
     private fun startTimer(durationMs: Long) {
         if (durationMs <= 0L) return
+        Prefs.setLastTimerMinutes(this, (durationMs / 60_000L).toInt().coerceAtLeast(1))
         val end = SystemClock.elapsedRealtime() + durationMs
         Prefs.setTimer(this, durationMs, end)
         startForeground(NOTIFICATION_ID, buildNotification(end))
         scheduleAlarm(end)
         handler.removeCallbacks(ticker)
         handler.postDelayed(ticker, TICK_MS)
+        WidgetUpdater.updateSleepTimer(this)
     }
 
     private fun extendTimer(extraMs: Long) {
@@ -79,18 +88,21 @@ class SleepTimerService : Service() {
         getSystemService(android.app.NotificationManager::class.java)
             ?.notify(NOTIFICATION_ID, buildNotification(newEnd))
         scheduleAlarm(newEnd)
+        WidgetUpdater.updateSleepTimer(this)
     }
 
     private fun stopTimer() {
         Prefs.clearTimer(this)
         cancelAlarm()
         handler.removeCallbacks(ticker)
+        WidgetUpdater.updateSleepTimer(this)
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
     }
 
     private fun finishTimer() {
         Prefs.clearTimer(this)
+        WidgetUpdater.updateSleepTimer(this)
         ScreenOffController.turnOff(this)
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
@@ -117,15 +129,7 @@ class SleepTimerService : Service() {
         am.cancel(alarmPendingIntent())
     }
 
-    private fun alarmPendingIntent(): PendingIntent {
-        val intent = Intent(this, SleepTimerAlarmReceiver::class.java).setAction(ACTION_FIRE)
-        return PendingIntent.getBroadcast(
-            this,
-            REQUEST_ALARM,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-    }
+    private fun alarmPendingIntent(): PendingIntent = alarmPendingIntent(this)
 
     // ---------- Notifikasi ----------
 
@@ -172,6 +176,17 @@ class SleepTimerService : Service() {
         private const val REQUEST_ALARM = 11
         private const val REQUEST_STOP = 12
         private const val REQUEST_OPEN = 13
+
+        /** PendingIntent alarm backstop (dibagikan ke luar utk widget/tile). */
+        fun alarmPendingIntent(context: Context): PendingIntent {
+            val intent = Intent(context, SleepTimerAlarmReceiver::class.java).setAction(ACTION_FIRE)
+            return PendingIntent.getBroadcast(
+                context,
+                REQUEST_ALARM,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+        }
 
         /** Format mm:ss, atau h:mm:ss kalau lebih dari 1 jam. */
         fun formatDuration(ms: Long): String {

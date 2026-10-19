@@ -36,6 +36,8 @@
     <string name="perm_status_inactive">Belum</string>
     <string name="action_grant">Izinkan</string>
     <string name="action_open">Buka</string>
+    <string name="action_save">Simpan</string>
+    <string name="action_cancel">Batal</string>
 
     <!-- Sleep timer -->
     <string name="sleep_presets">Durasi</string>
@@ -48,7 +50,56 @@
 
     <!-- Jadwal -->
     <string name="scheduler_title">Jadwal otomatis</string>
-    <string name="scheduler_placeholder">Segera hadir: atur jadwal (mis. 22.00 setiap hari) untuk mematikan layar otomatis.</string>
+
+    <!-- Tab 4 -->
+    <string name="tab_apps">Aplikasi</string>
+
+    <!-- Metode mematikan layar (DataStore) -->
+    <string name="method_section_title">Metode mematikan layar</string>
+    <string name="method_auto">Otomatis</string>
+    <string name="method_device_admin">Device Admin</string>
+    <string name="method_accessibility">Aksesibilitas</string>
+    <string name="method_overlay">Overlay</string>
+    <string name="method_desc">"Otomatis" memakai kunci layar (Admin/Aksesibilitas) lalu overlay bila keduanya tidak tersedia. Pilih salah satu untuk mengunci pilihan.</string>
+
+    <!-- Jadwal (v0.2) -->
+    <string name="scheduler_add">Tambah jadwal</string>
+    <string name="scheduler_add_title">Tambah jadwal</string>
+    <string name="scheduler_edit_title">Ubah jadwal</string>
+    <string name="scheduler_edit">Ubah</string>
+    <string name="scheduler_empty">Belum ada jadwal. Tambahkan, mis. 22.00 setiap hari untuk mematikan layar otomatis.</string>
+    <string name="scheduler_delete_desc">Hapus jadwal</string>
+    <string name="scheduler_days_all_default">Belum memilih hari</string>
+    <string name="scheduler_hour_label">Jam (0–23)</string>
+    <string name="scheduler_minute_label">Menit</string>
+    <string name="scheduler_days_label">Hari</string>
+    <string name="scheduler_days_warning">Pilih minimal satu hari.</string>
+    <string name="scheduler_exact_title">Izin "Alarm &amp; pengingat" belum aktif</string>
+    <string name="scheduler_exact_desc">Tanpa izin ini jadwal bisa telat beberapa menit — khususnya di ColorOS.</string>
+
+    <!-- Timeout per aplikasi (v0.2) -->
+    <string name="applist_title">Timeout per aplikasi</string>
+    <string name="applist_subtitle">Saat batas pemakaian sebuah app terdaftar habis, layar dimatikan otomatis. Cocok untuk batas waktu diri sendiri / anak.</string>
+    <string name="applist_accessibility_needed">Fitur ini butuh Layanan Aksesibilitas untuk mendeteksi aplikasi yang sedang dibuka.</string>
+    <string name="applist_accessibility_grant">Aktifkan aksesibilitas</string>
+    <string name="applist_empty">Belum ada aplikasi terdaftar.</string>
+    <string name="applist_add">Tambah aplikasi</string>
+    <string name="applist_picker_title">Pilih aplikasi</string>
+    <string name="applist_search_hint">Cari aplikasi…</string>
+    <string name="applist_picker_empty">Tidak ada aplikasi yang cocok.</string>
+    <string name="applist_pick_timeout">Durasi penggunaan sebelum layar mati:</string>
+    <string name="applist_pick_timeout_note">Hitungan mundur berjalan selama app ini di depan; pindah ke app lain akan me-reset hitungan.</string>
+    <string name="applist_delete_desc">Hapus dari daftar</string>
+
+    <!-- Widget -->
+    <string name="widget_screen_off_label">Matikan layar</string>
+    <string name="widget_timer_idle">Sleep Timer</string>
+    <string name="widget_btn_start">Mulai</string>
+    <string name="widget_btn_stop">Stop</string>
+
+    <!-- Quick Settings Tile sleep timer -->
+    <string name="tile_sleep_timer_label">Sleep Timer</string>
+    <string name="tile_sleep_timer_subtitle_off">Ketuk: mulai</string>
 
     <!-- Notifikasi -->
     <string name="channel_timer_name">Sleep Timer</string>
@@ -66,5 +117,5 @@
     <string name="tile_screen_off_label">Matikan Layar</string>
 
     <!-- Deskripsi layanan aksesibilitas (tampil ke pengguna) -->
-    <string name="accessibility_service_description">Dipakai untuk mengunci layar (GLOBAL_ACTION_LOCK_SCREEN) dan, di versi berikutnya, mendeteksi aplikasi yang sedang dibuka untuk fitur timeout per aplikasi.</string>
+    <string name="accessibility_service_description">ZScreenControl: mengunci layar (GLOBAL_ACTION_LOCK_SCREEN) dan mendeteksi aplikasi yang sedang ditampilkan untuk fitur timeout per aplikasi. Layanan ini tidak membaca isi layar dan tidak mengirim data ke mana pun.</string>
 </resources>

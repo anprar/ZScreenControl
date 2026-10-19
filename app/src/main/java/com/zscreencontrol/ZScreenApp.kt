@@ -3,11 +3,13 @@ package com.zscreencontrol
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import com.zscreencontrol.core.AppGraph
 
 class ZScreenApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        AppGraph.init(this)
         createNotificationChannels()
     }
 

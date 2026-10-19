@@ -16,6 +16,17 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- Alarm backstop saat HP tidur (doze) -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <!-- Pasang ulang alarm jadwal setelah reboot -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- Daftar aplikasi launchable untuk fitur timeout per aplikasi
+         (tanpa QUERY_ALL_PACKAGES) -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
 
     <application
         android:name=".ZScreenApp"
@@ -35,8 +46,8 @@
             </intent-filter>
         </activity>
 
-        <!-- Layanan aksesibilitas: kunci layar (GLOBAL_ACTION_LOCK_SCREEN),
-             nanti juga deteksi app foreground untuk per-app timeout. -->
+        <!-- Layanan aksesibilitas: kunci layar (GLOBAL_ACTION_LOCK_SCREEN)
+             + deteksi app foreground untuk per-app timeout. -->
         <service
             android:name=".service.ScreenOffAccessibilityService"
             android:exported="true"
@@ -99,5 +110,56 @@
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
         </service>
+
+        <!-- Quick Settings Tile: sleep timer mulai/berhenti -->
+        <service
+            android:name=".tile.SleepTimerTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_tile_sleep"
+            android:label="@string/tile_sleep_timer_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <!-- Scheduler: eksekusi jadwal + pasang ulang setelah reboot -->
+        <receiver
+            android:name=".scheduler.ScheduleAlarmReceiver"
+            android:exported="false" />
+
+        <receiver
+            android:name=".scheduler.ScheduleBootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Widget: Matikan Layar -->
+        <receiver
+            android:name=".widget.ScreenOffWidgetProvider"
+            android:exported="true"
+            android:label="@string/widget_screen_off_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/screen_off_widget_info" />
+        </receiver>
+
+        <!-- Widget: Sleep Timer -->
+        <receiver
+            android:name=".widget.SleepTimerWidgetProvider"
+            android:exported="true"
+            android:label="@string/tile_sleep_timer_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/sleep_timer_widget_info" />
+        </receiver>
     </application>
 </manifest>

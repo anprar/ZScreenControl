@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Widget "Matikan Layar": 1 sel, klik = matikan layar. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_screen_off_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="8dp"
+    android:background="@drawable/bg_widget_dark"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/widget_screen_off_icon"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_tile_screen_off"
+        android:tint="#FFFFFFFF" />
+
+    <TextView
+        android:id="@+id/widget_screen_off_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/widget_screen_off_label"
+        android:textColor="#FFFFFFFF"
+        android:textSize="12sp" />
+</LinearLayout>

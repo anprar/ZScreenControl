@@ -2,7 +2,9 @@ package com.zscreencontrol.core
 
 import android.Manifest
 import android.accessibilityservice.AccessibilityServiceInfo
+import android.app.AppOpsManager
 import android.app.admin.DevicePolicyManager
+import android.app.usage.UsageStatsManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -48,6 +50,21 @@ object Permissions {
             Manifest.permission.POST_NOTIFICATIONS
         ) == PackageManager.PERMISSION_GRANTED
     }
+
+    /** "Usage access" untuk mengurutkan daftar aplikasi (bukan izin bahaya). */
+    @Suppress("DEPRECATION") // checkOpNoThrow: satu-satunya API yang aman utk minSdk 28
+    fun hasUsageAccess(context: Context): Boolean {
+        val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as? AppOpsManager
+            ?: return false
+        val mode = appOps.checkOpNoThrow(
+            AppOpsManager.OPSTR_GET_USAGE_STATS,
+            android.os.Process.myUid(),
+            context.packageName
+        )
+        return mode == AppOpsManager.MODE_ALLOWED
+    }
+
+    fun usageAccessIntent(): Intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
 
     fun writeSettingsIntent(context: Context): Intent =
         Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:${context.packageName}"))
